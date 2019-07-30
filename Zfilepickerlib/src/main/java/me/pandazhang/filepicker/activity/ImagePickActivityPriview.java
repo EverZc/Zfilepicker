@@ -134,12 +134,12 @@ public class ImagePickActivityPriview extends PickerBaseActivity {
                             Toast.makeText(ImagePickActivityPriview.this, "已选中的图片太多,请确认以后继续添加图片",
                                     Toast.LENGTH_LONG).show();
                         }
-                        Log.e("imageSize  : ", imageSize / 1024 + "KB");
+                        //Log.e("imageSize  : ", imageSize / 1024 + "KB");
                     } else {
                         imageSize = imageSize - file.getSize();
                         mSelectedList.remove(file);
                         mCurrentNumber--;
-                        Log.e("imageSize  : ", imageSize / 1024 + "KB");
+                        //Log.e("imageSize  : ", imageSize / 1024 + "KB");
                     }
                     mTitle.setText(" ");
 

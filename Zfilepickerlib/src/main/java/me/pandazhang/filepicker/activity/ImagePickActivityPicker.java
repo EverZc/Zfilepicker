@@ -256,7 +256,7 @@ public class ImagePickActivityPicker extends PickerBaseActivity {
                 }*/
                 //以下注释 是 打开相册添加所有图片
                 for (Directory<ImageFile> directory : directories) {
-                    Log.e("imagepath  loaddata : ",directory.getFiles().toString());
+                    //Log.e("imagepath  loaddata : ",directory.getFiles().toString());
                     list.addAll(directory.getFiles());
 
                 }

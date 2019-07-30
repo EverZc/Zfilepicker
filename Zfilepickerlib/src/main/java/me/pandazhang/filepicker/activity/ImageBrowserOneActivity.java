@@ -174,7 +174,7 @@ public class ImageBrowserOneActivity extends PickerBaseActivity {
                     finish();
                     try {
                         String s = MediaStore.Images.Media.insertImage(getContentResolver(), newPath, "", "");
-                        Log.e("onActivityResult", s);
+                        //Log.e("onActivityResult", s);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
