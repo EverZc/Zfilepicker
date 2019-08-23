@@ -40,6 +40,7 @@ public class ImageLoader extends CursorLoader {
         setSelection(MIME_TYPE + "=? or " + MIME_TYPE + "=? or "+ MIME_TYPE + "=? or " + MIME_TYPE + "=?");
         String[] selectionArgs;
 
+        //屏蔽掉gif  确定有jpeg格式。
         // selectionArgs = new String[] { "image/jpeg", "image/png", "image/jpg","image/gif" };
         selectionArgs = new String[] { "image/jpeg", "image/png", "image/jpg" };
         setSelectionArgs(selectionArgs);
