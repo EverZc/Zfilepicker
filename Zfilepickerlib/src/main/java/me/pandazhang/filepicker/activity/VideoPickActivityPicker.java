@@ -59,6 +59,7 @@ public class VideoPickActivityPicker extends PickerBaseActivity {
 
         initView();
         super.onCreate(savedInstanceState);
+        loadData();
 
     }
 

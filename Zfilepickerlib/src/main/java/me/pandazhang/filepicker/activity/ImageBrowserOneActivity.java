@@ -76,6 +76,7 @@ public class ImageBrowserOneActivity extends PickerBaseActivity {
         mWithAspectRatio = getIntent().getIntArrayExtra(FilePicker.WITH_ASPECT_RATIO);
         super.onCreate(savedInstanceState);
         intoPick();
+        initView();
     }
 
     private void initView() {

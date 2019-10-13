@@ -82,6 +82,7 @@ public class ImageBrowserMoreActivity extends PickerBaseActivity {
         mSelectedList = getIntent().getParcelableArrayListExtra(IMAGE_BROWSER_LIST);
         mWithAspectRatio = getIntent().getIntArrayExtra(FilePicker.WITH_ASPECT_RATIO);
         super.onCreate(savedInstanceState);
+        initView();
     }
 
     private void initView() {

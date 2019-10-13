@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.LogUtils;
+
 import me.pandazhang.filepicker.R;
 
 import java.util.List;
@@ -57,7 +59,8 @@ public abstract class PickerBaseActivity extends AppCompatActivity implements Ea
         if (isGranted) {
             // Have permission, do the thing!
 //            Toast.makeText(this, "TODO: Camera things", Toast.LENGTH_LONG).show();
-            permissionGranted();
+            LogUtils.e("readExternalStorage   2019 10 13 进行了屏蔽操作");
+            //permissionGranted();
         } else {
             // Ask for one permission
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage),
@@ -67,7 +70,6 @@ public abstract class PickerBaseActivity extends AppCompatActivity implements Ea
     }
 //
 //    private void permissionGranted(boolean isGranted) {
-//
 //    }
 
     @Override
@@ -81,6 +83,7 @@ public abstract class PickerBaseActivity extends AppCompatActivity implements Ea
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         Log.d(TAG, "onPermissionsGranted:" + requestCode + ":" + perms.size());
+        LogUtils.e("onPermissionsGranted 父级的");
         permissionGranted();
     }
 

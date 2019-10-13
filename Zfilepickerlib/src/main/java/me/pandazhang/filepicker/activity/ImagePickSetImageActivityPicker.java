@@ -134,6 +134,7 @@ public class ImagePickSetImageActivityPicker extends PickerBaseActivity {
                 mPreview.setEnabled(mSelectedList.size() > 0);*/
             }
         });
+        loadData();
     }
 
     @Override

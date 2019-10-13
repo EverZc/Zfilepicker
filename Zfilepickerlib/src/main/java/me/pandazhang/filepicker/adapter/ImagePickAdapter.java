@@ -227,6 +227,9 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
         }
     }
 
+    public ArrayList<ImageFile> getData(){
+        return mList;
+    }
     private boolean isUpToMax() {
         return mCurrentNumber >= mMaxNumber;
     }

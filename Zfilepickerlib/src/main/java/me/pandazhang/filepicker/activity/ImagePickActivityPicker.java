@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
+
 import me.pandazhang.filepicker.DividerGridItemDecoration;
 import me.pandazhang.filepicker.FilePicker;
 import me.pandazhang.filepicker.R;
@@ -52,7 +54,7 @@ public class ImagePickActivityPicker extends PickerBaseActivity {
     private TextView mConfirm;
     private int[] mWithAspectRatio;
     private TextView mTitle;
-    private boolean isload=true;
+    private boolean isload = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,23 +73,14 @@ public class ImagePickActivityPicker extends PickerBaseActivity {
 
     @Override
     void permissionGranted() {
-        if (isload){
-            loadData();
-            isload=false;
+        if (isload) {
+            //loadData();
         }
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
     }
 
     private void initView() {
         mTbImagePick = (Toolbar) findViewById(R.id.tb_image_pick);
-        mTitle= (TextView) findViewById(R.id.tv_title);
+        mTitle = (TextView) findViewById(R.id.tv_title);
         mTbImagePick.setTitle("");
         //显示当前的数量
         if (mMaxNumber > 9) {
@@ -110,14 +103,13 @@ public class ImagePickActivityPicker extends PickerBaseActivity {
                 Intent intent = new Intent(ImagePickActivityPicker.this, ImageAlbumActivity.class);
                 intent.putParcelableArrayListExtra(FilePicker.RESULT_PICK_IMAGE, mSelectedList);
                 startActivityForResult(intent, FilePicker.REQUEST_CODE_ALBUM_IMAGE);
+                loadData();
             }
         });
-
         mConfirm = (TextView) findViewById(R.id.btn_confrim);
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent();
                 intent.putParcelableArrayListExtra(RESULT_PICK_IMAGE, mSelectedList);
                 for (int i = 0; i < mSelectedList.size(); i++) {
@@ -189,14 +181,14 @@ public class ImagePickActivityPicker extends PickerBaseActivity {
                         imageSize = imageSize + file.getSize();
                         mSelectedList.add(file);
                         mCurrentNumber++;
-                        Log.e("path OnSelectState : ",file.getPath());
+                        Log.e("path OnSelectState : ", file.getPath());
                     } else {
                         imageSize = imageSize - file.getSize();
                         mSelectedList.remove(file);
                         mCurrentNumber--;
                     }
                     mTitle.setText(mCurrentNumber + "/" + mMaxNumber);
-                    if (mCurrentNumber==mMaxNumber){
+                    if (mCurrentNumber == mMaxNumber) {
 
                     }
                 }
@@ -204,61 +196,63 @@ public class ImagePickActivityPicker extends PickerBaseActivity {
                 mPreview.setEnabled(mSelectedList.size() > 0);
             }
         });
+        loadData();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         switch (requestCode) {
             case FilePicker.REQUEST_CODE_TAKE_IMAGE:
-                Log.e("REQUEST_CODE_TAKE_IMAGE","REQUEST_CODE_TAKE_IMAGE");
+                LogUtils.e("REQUEST_CODE_TAKE_IMAGE");
                 if (resultCode == RESULT_OK) {
                     Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     File file = new File(mAdapter.mImagePath);
                     Uri contentUri = Uri.fromFile(file);
                     mediaScanIntent.setData(contentUri);
                     sendBroadcast(mediaScanIntent);
-
-                   loadData();
+                    loadDataPhone();
                 }
                 break;
             case FilePicker.REQUEST_CODE_BROWSER_IMAGE:
-                Log.e("","REQUEST_CODE_BROWSER_IMAGE");
+                LogUtils.e("REQUEST_CODE_BROWSERE");
                 if (resultCode == RESULT_OK) {
                     setResult(RESULT_OK, data);
                     finish();
                 }
             case FilePicker.REQUEST_CODE_ALBUM_IMAGE:
-                Log.e("","REQUEST_CODE_ALBUM_IMAGE");
+                LogUtils.e("REQUEST_CODE_ALBUM");
                 if (resultCode == RESULT_OK) {
                     ArrayList<ImageFile> list = data.getParcelableArrayListExtra(RESULT_PICK_IMAGE);
-                    mAdapter.refresh(list);
+                    LogUtils.e("list:", list.size() + "");
+                    mData.clear();
+                    mData.addAll(list);
+
+
                 }
                 break;
         }
     }
 
-    private void loadNewData(){
-        ArrayList<ImageFile> fileList = new ArrayList<ImageFile>();  //把要排序的文件加入集合
-    }
-
+    private  List<ImageFile> mData = new ArrayList<>();
     private void loadData() {
-        FileFilter.getImages(this, new FilterResultCallback<ImageFile>() {
+        LogUtils.e("执行 loadData 来了");
+         FileFilter.getImages(this, new FilterResultCallback<ImageFile>() {
             @Override
             public void onResult(List<Directory<ImageFile>> directories) {
-                List<ImageFile> list = new ArrayList<>();
-
+                LogUtils.e("onResult也执行了哈:" + directories.size() + "");
                 //只显示相机拍照的图片
-             /*   for (int i = 0; i < directories.size(); i++) {
+               /* for (int i = 0; i < directories.size(); i++) {
                     if (i == 0) {
                         Directory<ImageFile> directory=directories.get(0);
-                        list.addAll(directory.getFiles());
+                        mData.addAll(directory.getFiles());
                     }
                 }*/
                 //以下注释 是 打开相册添加所有图片
-                for (Directory<ImageFile> directory : directories) {
-                    //Log.e("imagepath  loaddata : ",directory.getFiles().toString());
-                    list.addAll(directory.getFiles());
-
+                if (mData.size()==0){
+                    for (Directory<ImageFile> directory : directories) {
+                        mData.addAll(directory.getFiles());
+                    }
                 }
 
 //                if (mSelectedList != null) {
@@ -273,24 +267,61 @@ public class ImagePickActivityPicker extends PickerBaseActivity {
 //                        }
 //                    }
 //                }
-                Collections.sort(list, new FileComparator()); //这个方法以后fileList里的数据是已经排好序的
-
-                mAdapter.refresh(list);
+                Collections.sort(mData, new FileComparator()); //这个方法以后fileList里的数据是已经排好序的
+                mAdapter.refresh(mData);
             }
         });
     }
 
-    private class FileComparator implements Comparator {
+    private void loadDataPhone() {
+        LogUtils.e("执行 loadData 来了");
+        FileFilter.getImages(this, new FilterResultCallback<ImageFile>() {
+            @Override
+            public void onResult(List<Directory<ImageFile>> directories) {
+                LogUtils.e("onResult也执行了哈:" + directories.size() + "");
+                //只显示相机拍照的图片
+               /* for (int i = 0; i < directories.size(); i++) {
+                    if (i == 0) {
+                        Directory<ImageFile> directory=directories.get(0);
+                        mData.addAll(directory.getFiles());
+                    }
+                }*/
+                //以下注释 是 打开相册添加所有图片
 
+                    for (Directory<ImageFile> directory : directories) {
+                        mData.addAll(directory.getFiles());
+                    }
+
+
+//                if (mSelectedList != null) {
+//                    for (int i = 0; i < mSelectedList.size(); i++) {
+//                        ImageFile imageFile = mSelectedList.get(i);
+//                        for (int j = 0; j < list.size(); j++) {
+//                            ImageFile imageFile1 = list.get(i);
+//                            if (TextUtils.equals(imageFile.getPath(), imageFile1.getPath())) {
+//                                mCurrentNumber++;
+//                                imageFile1.setSelected(true);
+//                            }
+//                        }
+//                    }
+//                }
+                Collections.sort(mData, new FileComparator()); //这个方法以后fileList里的数据是已经排好序的
+                mAdapter.refresh(mData);
+            }
+        });
+    }
+
+
+    private class FileComparator implements Comparator {
         @Override
         public int compare(Object o1, Object o2) {
             ImageFile s1 = (ImageFile) o1;
             ImageFile s2 = (ImageFile) o2;
-            if(s1.getDate()<s2.getDate()){
+            if (s1.getDate() < s2.getDate()) {
                 return 1;//最后修改的照片在前
-            }else if (s1.getDate()==s2.getDate()){
+            } else if (s1.getDate() == s2.getDate()) {
                 return 0;
-            }else {
+            } else {
                 return -1;
             }
         }
