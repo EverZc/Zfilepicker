@@ -43,6 +43,7 @@
             android:layout_marginLeft="17dp"
             android:textColor="@color/button_text_selector"
             android:textSize="@dimen/sp_white_text"
+
             android:gravity="center"
             android:text="裁剪" />
 

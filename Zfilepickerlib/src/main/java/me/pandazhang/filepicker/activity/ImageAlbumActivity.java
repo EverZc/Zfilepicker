@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
+
 
 import me.pandazhang.filepicker.DividerListItemDecoration;
 import me.pandazhang.filepicker.R;
@@ -90,7 +90,7 @@ public class ImageAlbumActivity extends PickerBaseActivity implements OnItemClic
             if (images.contains(imageFile)) {
                 images.get(images.indexOf(imageFile)).setSelected(true);
             }
-            LogUtils.e("item click",""+i);
+
         }
         Intent intent = getIntent();
         intent.putParcelableArrayListExtra(FilePicker.RESULT_PICK_IMAGE, images);
@@ -102,7 +102,7 @@ public class ImageAlbumActivity extends PickerBaseActivity implements OnItemClic
         FileFilter.getImages(this, new FilterResultCallback<ImageFile>() {
             @Override
             public void onResult(List<Directory<ImageFile>> directories) {
-                LogUtils.e("相册列表的  onResult");
+
                 AlbumFile allAlbumFile = new AlbumFile();
                 int totalCount = 0;
                 for (Directory<ImageFile> director : directories) {

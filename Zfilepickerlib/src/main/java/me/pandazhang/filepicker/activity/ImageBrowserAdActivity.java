@@ -25,8 +25,7 @@ import me.pandazhang.filepicker.FilePicker;
 import me.pandazhang.filepicker.R;
 import me.pandazhang.filepicker.Util;
 import me.pandazhang.filepicker.filter.entity.ImageFile;
-import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.UCropActivity;
+
 
 
 import java.io.File;
@@ -124,7 +123,7 @@ public class ImageBrowserAdActivity extends PickerBaseActivity {
                 String path = mCropImage.getPath();
                 String destination =  path.substring(path.lastIndexOf("/") + 1) + "crop_.jpeg";
                 Uri destinationUri = Uri.fromFile(new File(getCacheDir(), destination));
-                UCrop uCrop = UCrop.of(sourceUri, destinationUri);
+                /*UCrop uCrop = UCrop.of(sourceUri, destinationUri);
                 UCrop.Options options = new UCrop.Options();
                 if (mWithAspectRatio != null) {
                     uCrop.withAspectRatio(mWithAspectRatio[0], mWithAspectRatio[1]);
@@ -137,7 +136,7 @@ public class ImageBrowserAdActivity extends PickerBaseActivity {
                 options.setToolbarColor(getResources().getColor(R.color.black));
                 options.setStatusBarColor(getResources().getColor(R.color.black));
                 uCrop.withOptions(options);
-                uCrop.start(ImageBrowserAdActivity.this);
+                uCrop.start(ImageBrowserAdActivity.this);*/
             }
         });
         mViewPager = (ViewPager) findViewById(R.id.vp_image_pick);
@@ -166,7 +165,7 @@ public class ImageBrowserAdActivity extends PickerBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK){
+        /*if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK){
             Uri result = UCrop.getOutput(data);
             if (result != null){
                 String newPath = result.getPath();
@@ -182,7 +181,7 @@ public class ImageBrowserAdActivity extends PickerBaseActivity {
                     }
                 }
             }
-        }
+        }*/
     }
 
     private class ImageBrowserAdapter extends PagerAdapter {

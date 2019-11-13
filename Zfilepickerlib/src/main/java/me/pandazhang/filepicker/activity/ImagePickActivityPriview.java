@@ -43,7 +43,7 @@ public class ImagePickActivityPriview extends PickerBaseActivity {
     private RecyclerView mRecyclerView;
     private ImagePickAdapter mAdapter;
     private boolean isNeedCamera;
-    private ArrayList<ImageFile> mSelectedList = new ArrayList<>(); //选择的图片的集合
+    private ArrayList<ImageFile> mSelectedList = new ArrayList<>(); // 选择的图片的集合
     private long imageSize;
     private TextView mAlbum; //相簿
     private TextView mPreview; //点击预览
